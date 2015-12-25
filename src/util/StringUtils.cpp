@@ -5,19 +5,23 @@
 
 namespace util {
 namespace stringutils {
-  using std::istringstream;
   using std::string;
   using std::vector;
 
   vector<string> Split(const string &source, const char &delimiter) {
     vector<string> result;
-    istringstream stream(source);
+    std::istringstream stream(source);
 
     for (string token; getline(stream, token, delimiter);) {
       result.push_back(token);
     }
 
     return result;
+  }
+
+  string ToLowercase(string source) {
+    std::transform(source.begin(), source.end(), source.begin(), ::tolower);
+    return source;
   }
 
 } // namespace string

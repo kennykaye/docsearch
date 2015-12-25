@@ -4,6 +4,7 @@
 using std::string;
 using std::vector;
 using util::stringutils::Split;
+using util::stringutils::ToLowercase;
 
 TEST_CASE("Strings can be split by delimiter", "[string] [utils]") {
 
@@ -11,7 +12,8 @@ TEST_CASE("Strings can be split by delimiter", "[string] [utils]") {
     string source = "1,2,3,4,5";
     char delimiter = ',';
     vector<string> ints = Split(source, delimiter);
-    for (int i = 0; i < ints.size(); ++i) {
+    int size = static_cast<int>(ints.size());
+    for (int i = 0; i < size; ++i) {
       REQUIRE(std::stoi(ints[i]) == i + 1);
     }
   }
@@ -21,7 +23,8 @@ TEST_CASE("Strings can be split by delimiter", "[string] [utils]") {
     string wordsArray[4] = {"The", "lazy", "brown", "fox"};
     char delimiter = ',';
     vector<string> words = Split(source, delimiter);
-    for (int i = 0; i < words.size(); ++i) {
+    int size = static_cast<int>(words.size());
+    for (int i = 0; i < size; ++i) {
       REQUIRE(words[i] == wordsArray[i]);
     }
   }
@@ -30,7 +33,8 @@ TEST_CASE("Strings can be split by delimiter", "[string] [utils]") {
     string source = "1 2 3 4 5";
     char delimiter = ' ';
     vector<string> ints = Split(source, delimiter);
-    for (int i = 0; i < ints.size(); ++i) {
+    int size = static_cast<int>(ints.size());
+    for (int i = 0; i < size; ++i) {
       REQUIRE(std::stoi(ints[i]) == i + 1);
     }
   }
@@ -40,7 +44,8 @@ TEST_CASE("Strings can be split by delimiter", "[string] [utils]") {
     string wordsArray[4] = {"The", "lazy", "brown", "fox"};
     char delimiter = ' ';
     vector<string> words = Split(source, delimiter);
-    for (int i = 0; i < words.size(); ++i) {
+    int size = static_cast<int>(words.size());
+    for (int i = 0; i < size; ++i) {
       REQUIRE(words[i] == wordsArray[i]);
     }
   }
@@ -52,5 +57,31 @@ TEST_CASE("Strings can be split by delimiter", "[string] [utils]") {
     REQUIRE_FALSE(vect.empty());
     REQUIRE(vect.size() == 1);
     REQUIRE(vect.front() == source);
+  }
+}
+
+TEST_CASE("Can transform a string to lowercase", "[string] [utils]") {
+
+  SECTION("An all lowercase string remains lowercase") {
+    string lower = "all lowercase";
+    REQUIRE(ToLowercase(lower) == lower);
+  }
+
+  SECTION("An all uppercase string becomes lowercase") {
+    string upper = "ALL LOWERCASE";
+    string lower = "all lowercase";
+    REQUIRE(ToLowercase(upper) == lower);
+  }
+
+  SECTION("A mixed case string becomes lowercase") {
+    string mixed = "all LOwERcASe";
+    string lower = "all lowercase";
+    REQUIRE(ToLowercase(mixed) == lower);
+  }
+
+  SECTION("Numerals are not transformed") {
+    string mixed = "all LOWERCASE 12345";
+    string lower = "all lowercase 12345";
+    REQUIRE(ToLowercase(mixed) == lower);
   }
 }
