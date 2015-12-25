@@ -1,3 +1,6 @@
-[submodule "include/Catch"]
-	path = include/Catch
+[submodule "lib/Catch"]
+	path = lib/Catch
 	url = git@github.com:philsquared/Catch.git
+[submodule "lib/porter2_stemmer"]
+	path = lib/porter2_stemmer
+	url = https://github.com/smassung/porter2_stemmer
