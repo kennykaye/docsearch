@@ -5,6 +5,7 @@ using std::string;
 using std::vector;
 using util::stringutils::Split;
 using util::stringutils::ToLowercase;
+using util::stringutils::TrimPunctuation;
 
 TEST_CASE("Strings can be split by delimiter", "[string] [utils]") {
 
@@ -83,5 +84,20 @@ TEST_CASE("Can transform a string to lowercase", "[string] [utils]") {
     string mixed = "all LOWERCASE 12345";
     string lower = "all lowercase 12345";
     REQUIRE(ToLowercase(mixed) == lower);
+  }
+}
+
+TEST_CASE("Can remove all surrounding punctuation from a word") {
+  typedef std::pair<string, string> Test;
+
+  vector<Test> tests = {
+    Test("what?",  "what"), Test("fin!", "fin"), Test("sure.", "sure"),
+    Test("and...", "and"), Test("'the'", "the"), Test("(end)", "end"),
+    Test("who'll", "who'll"), Test("tom's", "tom's"), Test("'ol", "ol"),
+    Test("", ""), Test("''", ""), Test("....", ""),
+  };
+
+  for (auto &test : tests) {
+    REQUIRE(TrimPunctuation(test.first) == test.second);
   }
 }

@@ -24,5 +24,21 @@ namespace stringutils {
     return source;
   }
 
+  string TrimPunctuation(string source) {
+    if (source == "") {
+      return source;
+    }
+
+    for (auto it = source.begin(); std::ispunct(*it);) {
+      it = source.erase(it);
+    }
+
+    for (auto it = std::prev(source.end()); std::ispunct(*it); --it) {
+      source.erase(it);
+    }
+
+    return source;
+  }
+
 } // namespace string
 } // namespace utilities

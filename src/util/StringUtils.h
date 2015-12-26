@@ -9,6 +9,7 @@ namespace stringutils {
   Split(const std::string &source, const char &delimiter);
 
   std::string ToLowercase(std::string source);
+  std::string TrimPunctuation(std::string source);
 
 } // namespace string
 } // namespace utilities
