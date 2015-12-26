@@ -1,10 +1,11 @@
 #include <exception>
 #include <fstream>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
-#include "DocumentReader.h"
+#include "engine/Token.h"
+#include "engine/DocumentReader.h"
 #include "util/StringUtils.h"
 
 
@@ -12,6 +13,7 @@ namespace engine {
   using std::string;
   using std::vector;
   using std::ifstream;
+  using engine::Tokens;
 
   DocumentReader::DocumentReader(string title, string author, string path) {
     title_ = title;
@@ -33,21 +35,36 @@ namespace engine {
     return path_;
   }
 
-  vector<string> DocumentReader::GetTerms() const {
-    vector<string> terms;
-    vector<string> lines = DocumentReader::GetLines_();
+  Tokens DocumentReader::GetTokens() const {
+    Tokens total;
+    Lines lines = DocumentReader::GetLines_();
 
-    for (auto &line : lines) {
-      vector<string> tokens = util::stringutils::Split(line, ' ');
-      terms.insert(terms.end(), tokens.begin(), tokens.end());
+    for (size_t i = 0; i != lines.size(); ++i) {
+      Tokens tokens = DocumentReader::GetTokensPerLine_(lines[i], i);
+      tokens.insert(total.end(), total.begin(), tokens.end());
     }
 
-    return terms;
+    return total;
   }
 
-  vector<string> DocumentReader::GetLines_() const {
+  Tokens DocumentReader::GetTokensPerLine_(const string &line, int num) const {
+    Tokens tokens;
+    vector<string> words = util::stringutils::Split(line, ' ');
+
+    for (size_t i = 0; i != words.size(); ++i) {
+      Token token = Token();
+      token.SetWord(words[i]);
+      token.SetWordNumber(i);
+      token.SetLineNumber(num);
+      tokens.push_back(token);
+    }
+
+    return tokens;
+  }
+
+  Lines DocumentReader::GetLines_() const {
     string line;
-    vector<string> lines;
+    Lines lines;
     ifstream stream(DocumentReader::GetPath());
 
     if (!stream.is_open()) {

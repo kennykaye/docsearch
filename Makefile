@@ -1,16 +1,18 @@
 CC := g++
 SRC_DIR := src
+LIB_DIR := lib
 TEST_DIR := tests
 BUILD_DIR := build
 TARGET := bin/app
 TEST_TARGET := bin/tests
 
 SRC_EXT := cpp
+LIB :=
 SOURCES := $(shell find $(SRC_DIR) -type f -name *.$(SRC_EXT))
 TEST_SOURCES := $(subst $(SRC_DIR)/main.$(SRC_EXT),,${SOURCES})
 TESTS := $(shell find $(TEST_DIR) -type f -name *.$(SRC_EXT))
 OBJECTS := $(patsubst $(SRC_DIR)/%,$(BUILD_DIR)/%,$(SOURCES:.$(SRC_EXT)=.o))
-CFLAGS := -g -Wall -ansi -std=c++11
+CFLAGS := -g -Wall -std=c++11
 INC := -I./src -I./lib -I./lib/Catch/single_include
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(SRC_EXT)
@@ -42,7 +44,7 @@ endif
 
 tests:
 	@echo "Compiling tests..."
-	$(CC) $(CFLAGS) -o $(TEST_TARGET) $(INC) $(TEST_SOURCES) $(TESTS)
+	$(CC) $(CFLAGS) -o $(TEST_TARGET) $(INC) $(LIB) $(TEST_SOURCES) $(TESTS)
 	$(MAKE) test
 
 .PHONY: clean tests run

@@ -4,7 +4,7 @@
 #include "engine/DocumentReader.h"
 
 using std::string;
-using std::vector;
+using engine::Tokens;
 using engine::DocumentReader;
 
 TEST_CASE("DocumentReader can read plain text files", "[engine]") {
@@ -29,21 +29,21 @@ TEST_CASE("DocumentReader can read plain text files", "[engine]") {
     REQUIRE(reader.GetPath() == path);
   }
 
-  SECTION("Can get the terms in a document") {
-    vector<string> terms = reader.GetTerms();
+  SECTION("Can get the tokens in a document") {
+    Tokens tokens = reader.GetTokens();
 
-    for (int i = 0; i < terms.size(); ++i) {
-      REQUIRE(std::stoi(terms[i]) == i);
+    for (size_t i = 0; i != tokens.size(); ++i) {
+      REQUIRE(std::stoi(tokens[i].GetWord()) == i);
     }
   };
 
   SECTION("Throws exception when opening nonexistent file") {
     DocumentReader r("title", "author", "nonexistent.txt");
-    REQUIRE_THROWS(r.GetTerms());
+    REQUIRE_THROWS(r.GetTokens());
   }
 
   SECTION("Throws an exception when opening empty file") {
     DocumentReader r("title", "author", "tests/engine/emtpy.txt");
-    REQUIRE_THROWS(r.GetTerms());
+    REQUIRE_THROWS(r.GetTokens());
   }
 };

@@ -1,5 +1,5 @@
 #pragma once
-#include "engine/Tokens.h"
+#include <string>
 
 namespace engine {
 namespace stopwords {

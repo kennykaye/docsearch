@@ -1,8 +1,11 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "engine/Token.h"
 
 namespace engine {
+
+  using Lines = std::vector<std::string>;
 
   class DocumentReader {
     public:
@@ -12,12 +15,13 @@ namespace engine {
       std::string GetTitle() const;
       std::string GetAuthor() const;
       std::string GetPath() const;
-      std::vector<std::string> GetTerms() const;
+      engine::Tokens GetTokens() const;
 
     private:
       std::string title_;
       std::string author_;
       std::string path_;
-      std::vector<std::string> GetLines_() const;
+      Lines GetLines_() const;
+      engine::Tokens GetTokensPerLine_(const std::string &line, int num) const;
   };
 } // namespace engine

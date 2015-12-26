@@ -1,10 +1,13 @@
+#include <vector>
 #include "engine/StopWords.h"
 
 namespace engine {
 namespace stopwords {
+  using std::string;
+  using std::vector;
 
-  bool IsStopWord(const std::string &word) {
-    const Tokens stopWords = {
+  bool IsStopWord(const string &word) {
+    const vector<string> stopWords = {
       "a", "about", "also", "above", "after", "again", "against", "all",
       "am", "an", "and", "any", "are", "aren't", "as", "at", "be",
       "because","been", "before", "being", "below", "between", "both", "but",
