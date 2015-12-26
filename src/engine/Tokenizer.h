@@ -2,17 +2,16 @@
 #include "engine/Token.h"
 
 namespace engine {
-  class Tokenizer {
-    public:
-      Tokenizer(engine::Tokens tokens);
-      ~Tokenizer();
+namespace tokenizer {
 
-      engine::Tokens GetTokens();
-      void FilterStopWords();
-      void NormalizeTokens();
-      void StemTokens();
+  void Tokenize(Tokens &tokens);
 
-    private:
-      engine::Tokens tokens_;
-  };
+namespace internal {
+
+  void FilterStopWords(Tokens &tokens);
+  void NormalizeToken(Token &token);
+  void StemToken(Token &token);
+
+} // namespace internal
+} // namespace tokenizer
 } // namespace engine

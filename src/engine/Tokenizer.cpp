@@ -4,41 +4,52 @@
 #include "engine/Tokenizer.h"
 #include "engine/StopWords.h"
 #include "util/StringUtils.h"
+#include "porter2_stemmer/porter2_stemmer.h"
 
 namespace engine {
+namespace tokenizer {
+  using namespace engine::tokenizer::internal;
+
   using std::string;
   using std::vector;
   using engine::Tokens;
 
-  Tokenizer::Tokenizer(Tokens tokens) {
-    tokens_ = tokens;
+  void Tokenize(Tokens &tokens) {
+
+    for (auto &token : tokens) {
+      NormalizeToken(token);
+      StemToken(token);
+    }
+
+    FilterStopWords(tokens);
   }
 
-  Tokenizer::~Tokenizer() {}
+namespace internal {
 
-  void Tokenizer::FilterStopWords() {
-    auto begin = tokens_.begin();
-    auto end = tokens_.end();
+  void FilterStopWords(Tokens &tokens) {
+    auto begin = tokens.begin();
+    auto end = tokens.end();
 
-    auto it = std::remove_if(begin, end, [this](const Token &t) {
+    auto it = std::remove_if(begin, end, [](const Token &t) {
       return engine::stopwords::IsStopWord(t.GetNormalized());
     });
 
-    tokens_.erase(it, end);
+    tokens.erase(it, end);
   }
 
-  void Tokenizer::NormalizeTokens() {
-    // TODO: Remove trailing punctuation
-    for (auto &t : tokens_) {
-      t.SetNormalized(util::stringutils::ToLowercase(t.GetWord()));
-    }
+  void NormalizeToken(Token &token) {
+    string word = token.GetWord();
+    word = util::stringutils::TrimPunctuation(word);
+    word = util::stringutils::ToLowercase(word);
+    token.SetNormalized(word);
   }
 
-  void Tokenizer::StemTokens() {
+  void StemToken(Token &token) {
+    string stem = token.GetNormalized();
+    Porter2Stemmer::stem(stem);
+    token.SetStem(stem);
   }
 
-  Tokens Tokenizer::GetTokens() {
-    return tokens_;
-  }
-
-}
+} // namespace internal
+} // namespace tokenizer
+} // namepsace engine

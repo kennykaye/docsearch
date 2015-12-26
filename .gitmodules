@@ -3,4 +3,4 @@
 	url = git@github.com:philsquared/Catch.git
 [submodule "lib/porter2_stemmer"]
 	path = lib/porter2_stemmer
-	url = https://github.com/smassung/porter2_stemmer
+	url = git@github.com:smassung/porter2_stemmer.git
