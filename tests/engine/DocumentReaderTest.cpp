@@ -30,10 +30,17 @@ TEST_CASE("DocumentReader can read plain text files", "[engine]") {
   }
 
   SECTION("Can get the tokens in a document") {
+    REQUIRE_NOTHROW(reader.GetTokens());
+
     Tokens tokens = reader.GetTokens();
 
+    REQUIRE(!tokens.empty());
+
     for (size_t i = 0; i != tokens.size(); ++i) {
-      REQUIRE(std::stoi(tokens[i].GetWord()) == i);
+      int offset = tokens[i].GetOffset();
+      int word = std::stoi(tokens[i].GetWord());
+      REQUIRE(offset == i);
+      REQUIRE(word == i);
     }
   };
 

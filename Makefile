@@ -32,7 +32,7 @@ clean:
 	$(RM) -r $(BUILD_DIR) $(TARGET)
 	$(RM) -r $(BUILD_DIR) $(TEST_TARGET)
 
-test:
+test-again:
 ifneq ("$(wildcard $(TEST_TARGET))", "")
 	@echo "Running tests..."
 	./$(TEST_TARGET)
@@ -42,9 +42,9 @@ else
 	$(MAKE) test
 endif
 
-tests:
+test:
 	@echo "Compiling tests..."
 	$(CC) $(CFLAGS) -o $(TEST_TARGET) $(INC) $(LIB) $(TEST_SOURCES) $(TESTS)
-	$(MAKE) test
+	$(MAKE) test-again
 
-.PHONY: clean tests run
+.PHONY: clean test test-again run

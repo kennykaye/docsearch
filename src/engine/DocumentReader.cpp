@@ -13,9 +13,11 @@ namespace engine {
   using std::string;
   using std::vector;
   using std::ifstream;
+  using engine::Token;
   using engine::Tokens;
 
   DocumentReader::DocumentReader(string title, string author, string path) {
+    offset_ = 0;
     title_ = title;
     author_ = author;
     path_ = path;
@@ -35,28 +37,29 @@ namespace engine {
     return path_;
   }
 
-  Tokens DocumentReader::GetTokens() const {
+  Tokens DocumentReader::GetTokens() {
     Tokens total;
+    offset_ = 0;
     Lines lines = DocumentReader::GetLines_();
 
-    for (size_t i = 0; i != lines.size(); ++i) {
-      Tokens tokens = DocumentReader::GetTokensPerLine_(lines[i], i);
-      tokens.insert(total.end(), total.begin(), tokens.end());
+    for (auto &line : lines) {
+      Tokens tokens = DocumentReader::GetTokensPerLine_(line);
+      total.insert(total.end(), tokens.begin(), tokens.end());
     }
 
     return total;
   }
 
-  Tokens DocumentReader::GetTokensPerLine_(const string &line, int num) const {
+  Tokens DocumentReader::GetTokensPerLine_(const string &line) {
     Tokens tokens;
     vector<string> words = util::stringutils::Split(line, ' ');
 
-    for (size_t i = 0; i != words.size(); ++i) {
+    for (auto &word : words) {
       Token token = Token();
-      token.SetWord(words[i]);
-      token.SetWordNumber(i);
-      token.SetLineNumber(num);
+      token.SetWord(word);
+      token.SetOffset(offset_);
       tokens.push_back(token);
+      ++offset_;
     }
 
     return tokens;
@@ -68,7 +71,7 @@ namespace engine {
     ifstream stream(DocumentReader::GetPath());
 
     if (!stream.is_open()) {
-      throw std::runtime_error("Unable to open file");
+      throw std::runtime_error("Unable to open file " + path_);
     }
 
     while (std::getline(stream, line)) {
@@ -76,7 +79,7 @@ namespace engine {
     }
 
     if (stream.bad()) {
-      throw std::runtime_error("error while reading file");
+      throw std::runtime_error("error while reading file " + path_);
     }
 
     stream.close();

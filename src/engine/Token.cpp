@@ -4,18 +4,11 @@ namespace engine {
   using std::string;
 
   Token::Token() {
-    nullInt_ = -1;
-    nullString_ = "";
-
-    word_ = nullString_;
-    stem_ = nullString_;
-    normalized_ = nullString_;
-
-    lineNumber_ = nullInt_;
-    wordNumber_ = nullInt_;
+    word_ = "";
+    stem_ = "";
+    normalized_ = "";
+    offset_ = -1;
   };
-
-  Token::~Token() {};
 
   string Token::GetWord() const {
     return word_;
@@ -29,12 +22,8 @@ namespace engine {
     return stem_;
   }
 
-  int Token::GetLineNumber() const {
-    return lineNumber_;
-  }
-
-  int Token::GetWordNumber() const {
-    return wordNumber_;
+  int Token::GetOffset() const {
+    return offset_;
   }
 
   void Token::SetWord(string word) {
@@ -49,12 +38,8 @@ namespace engine {
     normalized_ = word;
   }
 
-  void Token::SetLineNumber(int num) {
-    lineNumber_ = num;
-  }
-
-  void Token::SetWordNumber(int num) {
-    wordNumber_ = num;
+  void Token::SetOffset(int offset) {
+    offset_ = offset;
   }
 
 } // namespace engine

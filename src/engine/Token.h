@@ -6,29 +6,23 @@ namespace engine {
   class Token {
     public:
       Token();
-      ~Token();
 
       std::string GetWord() const;
       std::string GetNormalized() const;
       std::string GetStem() const;
-      int GetLineNumber() const;
-      int GetWordNumber() const;
+      int GetOffset() const;
 
       void SetWord(std::string word);
       void SetNormalized(std::string word);
       void SetStem(std::string stem);
-      void SetLineNumber(int num);
-      void SetWordNumber(int num);
+      void SetOffset(int offset);
 
     private:
       std::string word_;
       std::string stem_;
       std::string normalized_;
-      std::string nullString_;
-      int nullInt_;
-      int lineNumber_;
-      int wordNumber_;
+      int offset_;
   };
 
-  using Tokens = std::vector<Token>;
+  using Tokens = std::vector<engine::Token>;
 } // namespace engine

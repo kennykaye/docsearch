@@ -15,13 +15,14 @@ namespace engine {
       std::string GetTitle() const;
       std::string GetAuthor() const;
       std::string GetPath() const;
-      engine::Tokens GetTokens() const;
+      engine::Tokens GetTokens();
 
     private:
+      int offset_;
       std::string title_;
       std::string author_;
       std::string path_;
       Lines GetLines_() const;
-      engine::Tokens GetTokensPerLine_(const std::string &line, int num) const;
+      engine::Tokens GetTokensPerLine_(const std::string &line);
   };
 } // namespace engine

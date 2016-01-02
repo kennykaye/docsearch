@@ -11,8 +11,7 @@ TEST_CASE("A model representing tokens in document", "[engine]") {
   const string normalized = "wordify";
   const string stem = "word";
   const string nullString = "";
-  const int lineNumber = 125;
-  const int wordNumber = 20;
+  const int offset = 125;
   const int nullNumber = -1;
 
   SECTION("Can construct a token") {
@@ -37,16 +36,10 @@ TEST_CASE("A model representing tokens in document", "[engine]") {
     REQUIRE(t.GetStem() == stem);
   }
 
-  SECTION("Can set a token's line number") {
+  SECTION("Can set a token's offset") {
     Token t;
-    REQUIRE_NOTHROW(t.SetLineNumber(lineNumber));
-    REQUIRE(t.GetLineNumber() == lineNumber);
-  }
-
-  SECTION("Can set a token's word number") {
-    Token t;
-    REQUIRE_NOTHROW(t.SetWordNumber(wordNumber));
-    REQUIRE(t.GetWordNumber() == wordNumber);
+    REQUIRE_NOTHROW(t.SetOffset(offset));
+    REQUIRE(t.GetOffset() == offset);
   }
 
   SECTION("Gets an empty string when getting an unset word") {
@@ -64,13 +57,8 @@ TEST_CASE("A model representing tokens in document", "[engine]") {
     REQUIRE(t.GetStem() == nullString);
   }
 
-  SECTION("Gets an empty string when getting an unset line number") {
+  SECTION("Gets -1 when getting an unset offset") {
     Token t;
-    REQUIRE(t.GetLineNumber() == nullNumber);
-  }
-
-  SECTION("Gets an empty string when getting an unset word number") {
-    Token t;
-    REQUIRE(t.GetWordNumber() == nullNumber);
+    REQUIRE(t.GetOffset() == nullNumber);
   }
 }
