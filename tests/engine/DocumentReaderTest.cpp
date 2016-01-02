@@ -4,6 +4,7 @@
 #include "engine/DocumentReader.h"
 
 using std::string;
+using std::vector;
 using engine::Tokens;
 using engine::DocumentReader;
 
@@ -15,6 +16,10 @@ TEST_CASE("DocumentReader can read plain text files", "[engine]") {
 
   SECTION("Can construct document reader") {
     REQUIRE_NOTHROW(DocumentReader r(title, author, path));
+  }
+
+  SECTION("Can get the document uid") {
+    REQUIRE(reader.GetUid());
   }
 
   SECTION("Can get the document title") {
@@ -42,7 +47,19 @@ TEST_CASE("DocumentReader can read plain text files", "[engine]") {
       REQUIRE(offset == i);
       REQUIRE(word == i);
     }
-  };
+  }
+
+  SECTION("Document Uid's are unique") {
+    vector<int> docs;
+
+    for (int i = 0; i < 10000; ++i) {
+      DocumentReader r("title", "author", "path/to/" + std::to_string(i));
+      docs.push_back(r.GetUid());
+    }
+
+    std::sort(docs.begin(), docs.end());
+    REQUIRE(std::adjacent_find(docs.begin(), docs.end()) == docs.end());
+  }
 
   SECTION("Throws exception when opening nonexistent file") {
     DocumentReader r("title", "author", "nonexistent.txt");
@@ -53,4 +70,5 @@ TEST_CASE("DocumentReader can read plain text files", "[engine]") {
     DocumentReader r("title", "author", "tests/engine/emtpy.txt");
     REQUIRE_THROWS(r.GetTokens());
   }
+
 };

@@ -16,14 +16,20 @@ namespace engine {
   using engine::Token;
   using engine::Tokens;
 
-  DocumentReader::DocumentReader(string title, string author, string path) {
+  int DocumentReader::newUID = 0;
+
+  DocumentReader::DocumentReader(string title,
+                                 string author,
+                                 string path) : UID_(newUID++) {
     offset_ = 0;
     title_ = title;
     author_ = author;
     path_ = path;
   }
 
-  DocumentReader::~DocumentReader() {};
+  int DocumentReader::GetUid() const {
+    return UID_;
+  }
 
   string DocumentReader::GetTitle() const {
     return title_;
