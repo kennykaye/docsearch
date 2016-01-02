@@ -7,9 +7,9 @@ namespace engine {
 
   using Lines = std::vector<std::string>;
 
-  class DocumentReader {
+  class Document {
     public:
-      DocumentReader(std::string title, std::string author, std::string path);
+      Document(std::string title, std::string author, std::string path);
 
       int GetUid() const;
       std::string GetTitle() const;
@@ -27,4 +27,6 @@ namespace engine {
       Lines GetLines_() const;
       engine::Tokens GetTokensPerLine_(const std::string &line);
   };
+
+  using Documents = std::vector<engine::Document>;
 } // namespace engine

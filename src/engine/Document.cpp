@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include "engine/Token.h"
-#include "engine/DocumentReader.h"
+#include "engine/Document.h"
 #include "util/StringUtils.h"
 
 
@@ -16,47 +16,47 @@ namespace engine {
   using engine::Token;
   using engine::Tokens;
 
-  int DocumentReader::newUID = 0;
+  int Document::newUID = 0;
 
-  DocumentReader::DocumentReader(string title,
-                                 string author,
-                                 string path) : UID_(newUID++) {
+  Document::Document(string title,
+                     string author,
+                     string path) : UID_(newUID++) {
     offset_ = 0;
     title_ = title;
     author_ = author;
     path_ = path;
   }
 
-  int DocumentReader::GetUid() const {
+  int Document::GetUid() const {
     return UID_;
   }
 
-  string DocumentReader::GetTitle() const {
+  string Document::GetTitle() const {
     return title_;
   }
 
-  string DocumentReader::GetAuthor() const {
+  string Document::GetAuthor() const {
     return author_;
   }
 
-  string DocumentReader::GetPath() const {
+  string Document::GetPath() const {
     return path_;
   }
 
-  Tokens DocumentReader::GetTokens() {
+  Tokens Document::GetTokens() {
     Tokens total;
     offset_ = 0;
-    Lines lines = DocumentReader::GetLines_();
+    Lines lines = Document::GetLines_();
 
     for (auto &line : lines) {
-      Tokens tokens = DocumentReader::GetTokensPerLine_(line);
+      Tokens tokens = Document::GetTokensPerLine_(line);
       total.insert(total.end(), tokens.begin(), tokens.end());
     }
 
     return total;
   }
 
-  Tokens DocumentReader::GetTokensPerLine_(const string &line) {
+  Tokens Document::GetTokensPerLine_(const string &line) {
     Tokens tokens;
     vector<string> words = util::stringutils::Split(line, ' ');
 
@@ -71,10 +71,10 @@ namespace engine {
     return tokens;
   }
 
-  Lines DocumentReader::GetLines_() const {
+  Lines Document::GetLines_() const {
     string line;
     Lines lines;
-    ifstream stream(DocumentReader::GetPath());
+    ifstream stream(Document::GetPath());
 
     if (!stream.is_open()) {
       throw std::runtime_error("Unable to open file " + path_);

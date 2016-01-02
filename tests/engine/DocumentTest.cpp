@@ -1,21 +1,21 @@
 #include <iostream>
 #include <fstream>
 #include "catch.hpp"
-#include "engine/DocumentReader.h"
+#include "engine/Document.h"
 
 using std::string;
 using std::vector;
 using engine::Tokens;
-using engine::DocumentReader;
+using engine::Document;
 
-TEST_CASE("DocumentReader can read plain text files", "[engine]") {
+TEST_CASE("Document can read plain text files", "[engine]") {
   string title = "test doc";
   string author = "test author";
   string path = "tests/engine/existent.txt";
-  DocumentReader reader(title, author, path);
+  Document reader(title, author, path);
 
   SECTION("Can construct document reader") {
-    REQUIRE_NOTHROW(DocumentReader r(title, author, path));
+    REQUIRE_NOTHROW(Document r(title, author, path));
   }
 
   SECTION("Can get the document uid") {
@@ -53,7 +53,7 @@ TEST_CASE("DocumentReader can read plain text files", "[engine]") {
     vector<int> docs;
 
     for (int i = 0; i < 10000; ++i) {
-      DocumentReader r("title", "author", "path/to/" + std::to_string(i));
+      Document r("title", "author", "path/to/" + std::to_string(i));
       docs.push_back(r.GetUid());
     }
 
@@ -62,12 +62,12 @@ TEST_CASE("DocumentReader can read plain text files", "[engine]") {
   }
 
   SECTION("Throws exception when opening nonexistent file") {
-    DocumentReader r("title", "author", "nonexistent.txt");
+    Document r("title", "author", "nonexistent.txt");
     REQUIRE_THROWS(r.GetTokens());
   }
 
   SECTION("Throws an exception when opening empty file") {
-    DocumentReader r("title", "author", "tests/engine/emtpy.txt");
+    Document r("title", "author", "tests/engine/emtpy.txt");
     REQUIRE_THROWS(r.GetTokens());
   }
 

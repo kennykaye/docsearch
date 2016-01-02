@@ -24,7 +24,7 @@ Approach:
   10. Build postings list for each term
 */
 #include <iostream>
-#include "engine/DocumentReader.h"
+#include "engine/Document.h"
 
 using namespace std;
 
